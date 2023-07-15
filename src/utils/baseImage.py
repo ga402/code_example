@@ -1,4 +1,6 @@
 
+# Basic class for greyscale 3D images/numpy arrays
+#
 
 import matplotlib.pyplot as plt
 from func import *
@@ -22,7 +24,7 @@ class baseImage:
             return print(
                 f"level outside the z dimensions of image  (0 to {image.shape[0]})"
             )
-        fig, ax = plt.subplots(figsize=(10, 10))
+        fig, ax = plt.subplots(figsize=(4, 4))
         ax.imshow(self.image[level, :, :], cmap="gray")
         plt.axis("off")
         if save == True:

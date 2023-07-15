@@ -1,13 +1,10 @@
+#
+# A collection of useful functions
+#
 import numpy as np
-import sys
-import argparse
 from datetime import datetime
-import logging
-import os
 import cv2 as cv
 import functools
-from PIL import Image
-import matplotlib.pyplot as plt
 
 ## for parallel proccessing
 from joblib import delayed, Parallel
@@ -35,9 +32,9 @@ def dfuncapply2Arr(func, img, img2):
     )
 
 
-def dfuncapplyVec2Arr(func, img, vec):
+def dfuncapplyVec2Arr(func, img, vec, *args, **kwargs):
     assert img.shape[0] == len(vec), "array and vector dimensions do not match"
-    return np.array([func(img[i, ...], vec[i]) for i in np.arange(0, img.shape[0])])
+    return np.array([func(img[i, ...], vec[i],*args, **kwargs) for i in np.arange(0, img.shape[0])])
 
 
 def apply3D(func):
