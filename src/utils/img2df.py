@@ -13,8 +13,6 @@ from func import *
 from baseImage import *
 
 
-
-
 class img2df(baseImage):
     def __init__(self, image):
         super().__init__(image)
@@ -26,7 +24,7 @@ class img2df(baseImage):
         """extract the contours from the 2D layer
 
         Args:
-            im (binary image): binary image 
+            im (binary image): binary image
 
         Returns:
             contours
@@ -54,8 +52,7 @@ class img2df(baseImage):
         return MP
 
     def generateContoursDataFrame(self):
-        """convert the series of 2D contours into a dataframe of geom forms 
-        """
+        """convert the series of 2D contours into a dataframe of geom forms"""
         MP_list = self.contours2Polygons(self.image)
         self.gdf = gpd.GeoDataFrame({"z_level": self.z_levels, "geometry": MP_list})
         self.gdf.set_geometry("geometry")
@@ -94,8 +91,3 @@ class img2df(baseImage):
             print("generateCompleteMultiPolygon failed")
 
         return self.final_geom
-
-
-
-
-

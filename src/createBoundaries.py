@@ -1,6 +1,6 @@
-# 'createBoundaries' script aims to extract the contours from 
+# 'createBoundaries' script aims to extract the contours from
 # a 3D binary image into two separate outputs; a geopandas
-# dataframe and a 3D polygon. 
+# dataframe and a 3D polygon.
 
 import numpy as np
 import tifffile as tf
@@ -9,7 +9,6 @@ import geopandas as gpd
 from utils.contourtools import *
 from utils.func import *
 from utils.img2df import img2df as img2df
-
 
 
 def get_program_parameters():
@@ -26,7 +25,13 @@ def get_program_parameters():
     parser.add_argument(
         "-o", "--output", help="output name: eg. control_boundaries.geojson"
     )
-    parser.add_argument('-s',"--block_reduce_size",type=int, default=3,  help='amount to reduce slice amount, eg. 1')
+    parser.add_argument(
+        "-s",
+        "--block_reduce_size",
+        type=int,
+        default=3,
+        help="amount to reduce slice amount, eg. 1",
+    )
     args = parser.parse_args()
     return args.file, args.output, args.block_reduce_size
 
@@ -49,7 +54,7 @@ def main(im, br_size):
     ]
     # adjustment for the downscaling..
     if br_size:
-        filtered_contours2 = [c*br_size for c in filtered_contours2]
+        filtered_contours2 = [c * br_size for c in filtered_contours2]
 
     try:
         contours_out = applySmoothContour(filtered_contours2, smooth_parameter=10)
@@ -61,7 +66,7 @@ def main(im, br_size):
 if __name__ == "__main__":
     logfile = createlog()
     logging.basicConfig(filename=logfile, level=logging.INFO)
-    
+
     image_path, output_name, br_size = get_program_parameters()
 
     img = tf.imread(image_path)
@@ -75,24 +80,23 @@ if __name__ == "__main__":
     # if had block reduction - this needs to be taken into account (+padding)
     if br_size:
         z, x, y = img.shape
-        img = np.zeros((z, (x-2)*br_size, (y-2)*br_size))
-    
+        img = np.zeros((z, (x - 2) * br_size, (y - 2) * br_size))
+
     im = fillImage(img, contours)
 
     # load into the 'img2df' class
     idf = img2df(im)
-    
+
     # create 3D polygon...
     final_geom = idf.getPolygon3D()
 
-    # create the dataframe 
+    # create the dataframe
     gdf = idf.getGDF()
 
     # save 3D polygon (using geopandas tools to save)
-    gpd.GeoSeries([final_geom]).to_file(f"CountourBoundaries_{output_name}", driver="GeoJSON")
+    gpd.GeoSeries([final_geom]).to_file(
+        f"CountourBoundaries_{output_name}", driver="GeoJSON"
+    )
 
     # save the gdf dataframe
-    gdf.to_file(f"geodf_{output_name}",driver="GeoJSON")
-
-
-
+    gdf.to_file(f"geodf_{output_name}", driver="GeoJSON")

@@ -22,10 +22,6 @@ def padImage(img):
     return np.pad(img, [(1, 1), (1, 1)], mode="constant")
 
 
-
-
-
-
 @papply3D
 def padImagePar(img):
     """Pads the image with a line of zeros on the 4 edges
@@ -37,11 +33,6 @@ def padImagePar(img):
         img (int): binary image with pad of zeros.
     """
     return np.pad(img, [(1, 1), (1, 1)], mode="constant")
-
-
-
-
-
 
 
 def findContours(binary_img):
@@ -60,10 +51,6 @@ def findContours(binary_img):
     return contours, hierarchy
 
 
-
-
-
-
 def getContourAreasPerimeters(contour):
     """get area and perimeter length of all the contours you extract
 
@@ -78,10 +65,6 @@ def getContourAreasPerimeters(contour):
     return area, perimeter
 
 
-
-
-
-
 def extractAreasPerimeters(contours):
     """apply `getContourAreasPerimeters` to each the contours
 
@@ -93,10 +76,6 @@ def extractAreasPerimeters(contours):
     """
     area, perimeter = zip(*map(getContourAreasPerimeters, contours))
     return area, perimeter
-
-
-
-
 
 
 def binaryArea(contour, a=5000):
@@ -114,10 +93,6 @@ def binaryArea(contour, a=5000):
         return True
     else:
         return False
-
-
-
-
 
 
 def filterContoursSize(contours, hierarchy, number=10):
@@ -149,11 +124,6 @@ def filterContoursSize(contours, hierarchy, number=10):
     return filtered_contours, filtered_hierarchy
 
 
-
-
-
-
-
 def smoothContour(contour, smooth_parameter=10):
     """smooth the contours using interpolation and a slightly reduced length of contours
 
@@ -177,11 +147,6 @@ def smoothContour(contour, smooth_parameter=10):
     return np.array(res_array)
 
 
-
-
-
-
-
 def applySmoothContour(contours, smooth_parameter=10):
     """application of the smooth contour function to each contour
 
@@ -196,10 +161,6 @@ def applySmoothContour(contours, smooth_parameter=10):
         map(partial(smoothContour, smooth_parameter=smooth_parameter), contours)
     )
     return smoothed_contours
-
-
-
-
 
 
 @applyVec2Arr3D
@@ -218,10 +179,6 @@ def fillImage(img, contours):
     return cv.fillPoly(stencil, contours, color)
 
 
-
-
-
-
 @applyVec2Arr3D
 def contours2Image(img, contours):
     """Add contours onto image
@@ -234,12 +191,8 @@ def contours2Image(img, contours):
         [type]: [description]
     """
     im = cv.cvtColor(img.copy(), cv.COLOR_GRAY2RGB)
-    im = cv.drawContours(im, contours, -1, (255,0 ,0), 3)
+    im = cv.drawContours(im, contours, -1, (255, 0, 0), 3)
     return im
-
-
-
-
 
 
 @applyVec2Arr3D
@@ -259,10 +212,6 @@ def drawContours(img, contours):
     return stencil
 
 
-
-
-
-
 @sapply3D
 def img2Contours(binary_img):
     """extracts contours and hierarchy using tree function
@@ -274,7 +223,5 @@ def img2Contours(binary_img):
         contours: [description]
         hierarchy: [description]
     """
-    contours, _ = cv.findContours(
-        binary_img, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE
-    )
+    contours, _ = cv.findContours(binary_img, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     return contours

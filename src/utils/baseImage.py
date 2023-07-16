@@ -1,10 +1,8 @@
-
 # Basic class for greyscale 3D images/numpy arrays
 #
 
 import matplotlib.pyplot as plt
 from func import *
-
 
 
 class baseImage:
